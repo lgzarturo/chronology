@@ -32,6 +32,35 @@ El contenido histórico proviene del documento `cronologia-deep-research-interne
 - Alpine.js para filtros, búsqueda, menú móvil y estados locales.
 - Phosphor Icons para iconografía.
 - Bun como runtime y gestor de dependencias.
+- Google Tag Manager para medición de uso con Consent Mode.
+
+## Medición y consentimiento
+
+El sitio instala el contenedor `GTM-TWHMZSDZ` de Google Tag Manager en `index.html`.
+
+Antes de cargar GTM se inicializa Google Consent Mode con estos valores por defecto:
+
+- `analytics_storage: denied`
+- `ad_storage: denied`
+- `ad_user_data: denied`
+- `ad_personalization: denied`
+
+El banner de consentimiento permite aceptar o rechazar la medición. Si el usuario acepta, los cuatro parámetros pasan a `granted`; si rechaza, permanecen en `denied`. La elección se guarda en `localStorage` como `chronology_consent`.
+
+Eventos enviados a `dataLayer`:
+
+- `consent_update`
+- `filter_change`
+- `search_interaction`
+- `filter_reset`
+- `nav_click`
+- `link_click`
+- `details_toggle`
+- `scroll_depth`
+- `reading_time`
+- `engaged_session`
+
+La búsqueda local no envía el texto escrito por el usuario. Solo se mide la longitud de la consulta, filtros activos y cantidad de eventos visibles. Los tags configurados dentro de GTM deben respetar los Consent Settings correspondientes.
 
 ## Estructura
 

@@ -3,6 +3,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      function chronologyConsentState(status) {
+        var value = status === "granted" ? "granted" : "denied";
+        return {
+          analytics_storage: value,
+          ad_storage: value,
+          ad_user_data: value,
+          ad_personalization: value
+        };
+      }
+      gtag("consent", "default", Object.assign(chronologyConsentState("denied"), {
+        wait_for_update: 500
+      }));
+      gtag("set", "ads_data_redaction", true);
+      try {
+        var storedConsent = window.localStorage.getItem("chronology_consent");
+        if (storedConsent === "granted" || storedConsent === "denied") {
+          gtag("consent", "update", chronologyConsentState(storedConsent));
+          window.dataLayer.push({
+            event: "consent_update",
+            consent_status: storedConsent,
+            consent_source: "stored"
+          });
+        }
+      } catch (error) {}
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+      new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
+      "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,"script","dataLayer","GTM-TWHMZSDZ");
+    </script>
+    <!-- End Google Tag Manager -->
     <meta
       name="description"
       content="Cronología histórica de Internet y la World Wide Web, de la actualidad a sus fundamentos técnicos."
@@ -12,6 +51,45 @@
     <link rel="stylesheet" href="./node_modules/@phosphor-icons/web/src/regular/style.css" />
     <script defer src="./node_modules/alpinejs/dist/cdn.min.js"></script>
     <script>
+      function trackEvent(eventName, params) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(Object.assign({
+          event: eventName,
+          device_type: window.innerWidth >= 1024 ? "desktop" : window.innerWidth >= 640 ? "tablet" : "mobile"
+        }, params || {}));
+      }
+
+      function consentBanner() {
+        return {
+          visible: false,
+          init() {
+            try {
+              var storedConsent = window.localStorage.getItem("chronology_consent");
+              this.visible = storedConsent !== "granted" && storedConsent !== "denied";
+            } catch (error) {
+              this.visible = true;
+            }
+          },
+          accept() {
+            this.setConsent("granted");
+          },
+          reject() {
+            this.setConsent("denied");
+          },
+          setConsent(status) {
+            try {
+              window.localStorage.setItem("chronology_consent", status);
+            } catch (error) {}
+            gtag("consent", "update", chronologyConsentState(status));
+            trackEvent("consent_update", {
+              consent_status: status,
+              consent_source: "banner"
+            });
+            this.visible = false;
+          }
+        };
+      }
+
       function timelineFilters() {
         return {
           query: "",
@@ -19,6 +97,7 @@
           category: "all",
           drawerOpen: false,
           filtersOpen: true,
+          searchTimer: null,
           match(el) {
             const text = (el.dataset.search || el.textContent || "").toLowerCase();
             const periodMatch = this.period === "all" || el.dataset.period === this.period;
@@ -29,16 +108,134 @@
           hasVisibleCards(sectionEl) {
             return Array.from(sectionEl.querySelectorAll(".event-card")).some(card => this.match(card));
           },
+          visibleEventCount() {
+            return Array.from(document.querySelectorAll(".event-card")).filter(card => this.match(card)).length;
+          },
+          setPeriod(value) {
+            this.period = value;
+            this.trackFilter("period", value);
+          },
+          setCategory(value) {
+            this.category = value;
+            this.trackFilter("category", value);
+          },
+          trackFilter(type, value) {
+            trackEvent("filter_change", {
+              filter_type: type,
+              filter_value: value,
+              period_filter: this.period,
+              category_filter: this.category,
+              visible_events: this.visibleEventCount()
+            });
+          },
+          scheduleSearch(value) {
+            this.query = value;
+            window.clearTimeout(this.searchTimer);
+            this.searchTimer = window.setTimeout(() => {
+              trackEvent("search_interaction", {
+                query_length: this.query.trim().length,
+                has_query: this.query.trim().length > 0,
+                period_filter: this.period,
+                category_filter: this.category,
+                visible_events: this.visibleEventCount()
+              });
+            }, 600);
+          },
           reset() {
             this.query = "";
             this.period = "all";
             this.category = "all";
+            trackEvent("filter_reset", {
+              visible_events: this.visibleEventCount()
+            });
           }
         };
       }
+
+      function setupChronologyMetrics() {
+        var scrollMarks = [25, 50, 75, 90, 100];
+        var sentScrollMarks = {};
+        var readingMarks = [30, 60, 120, 180];
+        var sentReadingMarks = {};
+        var startTime = Date.now();
+        var ticking = false;
+
+        document.addEventListener("click", function(event) {
+          var tracked = event.target.closest("[data-ga-event]");
+          if (tracked) {
+            trackEvent(tracked.dataset.gaEvent, {
+              link_text: (tracked.dataset.gaLabel || tracked.textContent || "").trim().slice(0, 80),
+              link_url: tracked.dataset.gaUrl || tracked.getAttribute("href") || "",
+              trigger_location: tracked.dataset.gaLocation || "",
+              project_name: tracked.dataset.gaName || ""
+            });
+            return;
+          }
+
+          var link = event.target.closest("a[href]");
+          if (link) {
+            trackEvent("link_click", {
+              link_text: (link.textContent || "").trim().slice(0, 80),
+              link_url: link.getAttribute("href"),
+              outbound: Boolean(link.hostname && link.hostname !== window.location.hostname)
+            });
+          }
+        });
+
+        document.addEventListener("toggle", function(event) {
+          if (event.target.tagName !== "DETAILS") return;
+          var article = event.target.closest("article");
+          var title = article ? article.querySelector("h4, h3") : null;
+          trackEvent("details_toggle", {
+            details_open: event.target.open,
+            details_label: (event.target.querySelector("summary")?.textContent || "").trim().slice(0, 80),
+            event_title: (title?.textContent || "").trim().slice(0, 120)
+          });
+        }, true);
+
+        function trackScroll() {
+          var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          var percent = maxScroll <= 0 ? 100 : Math.round(((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100);
+          scrollMarks.forEach(function(mark) {
+            if (percent >= mark && !sentScrollMarks[mark]) {
+              sentScrollMarks[mark] = true;
+              trackEvent("scroll_depth", { percent: mark });
+            }
+          });
+          ticking = false;
+        }
+
+        window.addEventListener("scroll", function() {
+          if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(trackScroll);
+          }
+        }, { passive: true });
+
+        window.setInterval(function() {
+          if (document.visibilityState !== "visible") return;
+          var elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+          readingMarks.forEach(function(mark) {
+            if (elapsedSeconds >= mark && !sentReadingMarks[mark]) {
+              sentReadingMarks[mark] = true;
+              trackEvent("reading_time", { seconds: mark });
+            }
+          });
+          if (elapsedSeconds >= 10 && !sentReadingMarks.engaged) {
+            sentReadingMarks.engaged = true;
+            trackEvent("engaged_session", { seconds: elapsedSeconds });
+          }
+        }, 5000);
+      }
+
+      document.addEventListener("DOMContentLoaded", setupChronologyMetrics);
     </script>
   </head>
   <body class="bg-background text-text-primary">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TWHMZSDZ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div x-data="timelineFilters()" x-on:keydown.escape.window="drawerOpen = false">
       <header class="border-b border-border bg-background">
         <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -147,6 +344,7 @@
                   class="w-full bg-transparent px-3 py-3 font-mono text-sm text-text-primary placeholder:text-text-secondary"
                   type="search"
                   x-model="query"
+                  x-on:input="scheduleSearch($event.target.value)"
                   placeholder="Buscar persona, empresa, protocolo o evento"
                 />
               </span>
@@ -154,21 +352,21 @@
             <div>
               <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Período</p>
               <div class="mt-2 flex flex-wrap gap-2">
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="period = 'all'">Todos</button>
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'contemporanea' ? 'border-era-conflict bg-era-conflict text-background' : 'border-era-conflict text-era-conflict opacity-70'" x-on:click="period = 'contemporanea'">2026-2016</button>
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'plataformas' ? 'border-era-platform bg-era-platform text-background' : 'border-era-platform text-era-platform opacity-70'" x-on:click="period = 'plataformas'">2015-2004</button>
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'web' ? 'border-era-web bg-era-web text-background' : 'border-era-web text-era-web opacity-70'" x-on:click="period = 'web'">1999-1983</button>
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'fundacion' ? 'border-era-foundation bg-era-foundation text-background' : 'border-era-foundation text-era-foundation opacity-70'" x-on:click="period = 'fundacion'">1983-1960</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="setPeriod('all')">Todos</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'contemporanea' ? 'border-era-conflict bg-era-conflict text-background' : 'border-era-conflict text-era-conflict opacity-70'" x-on:click="setPeriod('contemporanea')">2026-2016</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'plataformas' ? 'border-era-platform bg-era-platform text-background' : 'border-era-platform text-era-platform opacity-70'" x-on:click="setPeriod('plataformas')">2015-2004</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'web' ? 'border-era-web bg-era-web text-background' : 'border-era-web text-era-web opacity-70'" x-on:click="setPeriod('web')">1999-1983</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'fundacion' ? 'border-era-foundation bg-era-foundation text-background' : 'border-era-foundation text-era-foundation opacity-70'" x-on:click="setPeriod('fundacion')">1983-1960</button>
               </div>
             </div>
             <div>
               <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Categoria</p>
               <div class="mt-2 flex flex-wrap gap-2">
-                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="category === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="category = 'all'">Todas</button>
-                <button class="border border-era-foundation px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-foundation opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'foundation' ? 'bg-era-foundation text-background opacity-100' : ''" x-on:click="category = 'foundation'">Infraestructura</button>
-                <button class="border border-era-web px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-web opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'web' ? 'bg-era-web text-background opacity-100' : ''" x-on:click="category = 'web'">Web</button>
-                <button class="border border-era-platform px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-platform opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'platform' ? 'bg-era-platform text-background opacity-100' : ''" x-on:click="category = 'platform'">Plataformas</button>
-                <button class="border border-era-conflict px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-conflict opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'governance' ? 'bg-era-conflict text-background opacity-100' : ''" x-on:click="category = 'governance'">Gobernanza</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="category === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="setCategory('all')">Todas</button>
+                <button class="border border-era-foundation px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-foundation opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'foundation' ? 'bg-era-foundation text-background opacity-100' : ''" x-on:click="setCategory('foundation')">Infraestructura</button>
+                <button class="border border-era-web px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-web opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'web' ? 'bg-era-web text-background opacity-100' : ''" x-on:click="setCategory('web')">Web</button>
+                <button class="border border-era-platform px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-platform opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'platform' ? 'bg-era-platform text-background opacity-100' : ''" x-on:click="setCategory('platform')">Plataformas</button>
+                <button class="border border-era-conflict px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-conflict opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'governance' ? 'bg-era-conflict text-background opacity-100' : ''" x-on:click="setCategory('governance')">Gobernanza</button>
               </div>
             </div>
             <button class="justify-self-start border border-border px-4 py-2 font-mono text-sm text-text-secondary transition-colors duration-100 hover:border-text-primary hover:text-text-primary" type="button" x-on:click="reset()">Limpiar filtros</button>
@@ -714,6 +912,42 @@
           <p>HTML + TailwindCSS + Alpine.js + Phosphor Icons</p>
         </div>
       </footer>
+
+      <section
+        class="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background px-4 py-4 sm:px-6 lg:px-8"
+        x-data="consentBanner()"
+        x-show="visible"
+        x-cloak
+        x-transition.duration.150ms
+        role="region"
+        aria-live="polite"
+        aria-labelledby="consent-title"
+      >
+        <div class="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p id="consent-title" class="font-mono text-xs uppercase tracking-wide text-era-web">Medición y privacidad</p>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-text-secondary">
+              Usamos Google Tag Manager para medir filtros, lectura, scroll y clics. Por defecto no se conceden cookies de analítica ni publicidad; si aceptas, se activan los cuatro permisos de Consent Mode.
+            </p>
+          </div>
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <button
+              type="button"
+              class="border border-era-web px-4 py-3 font-mono text-sm font-medium text-era-web transition-colors duration-100 hover:bg-era-web hover:text-background"
+              x-on:click="accept()"
+            >
+              Aceptar medición
+            </button>
+            <button
+              type="button"
+              class="border border-border px-4 py-3 font-mono text-sm font-medium text-text-secondary transition-colors duration-100 hover:border-text-primary hover:text-text-primary"
+              x-on:click="reject()"
+            >
+              Rechazar
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   </body>
 </html>
