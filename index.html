@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Cronologia historica de Internet y la World Wide Web, de la actualidad a sus fundamentos tecnicos."
+    />
+    <title>Cronologia de Internet y la World Wide Web</title>
+    <link rel="stylesheet" href="./dist/output.css" />
+    <link rel="stylesheet" href="./node_modules/@phosphor-icons/web/src/regular/style.css" />
+    <script defer src="./node_modules/alpinejs/dist/cdn.min.js"></script>
+    <script>
+      function timelineFilters() {
+        return {
+          query: "",
+          period: "all",
+          category: "all",
+          drawerOpen: false,
+          filtersOpen: true,
+          match(el) {
+            const text = (el.dataset.search || el.textContent || "").toLowerCase();
+            const periodMatch = this.period === "all" || el.dataset.period === this.period;
+            const categoryMatch = this.category === "all" || (el.dataset.category || "").split(" ").includes(this.category);
+            const queryMatch = !this.query || text.includes(this.query.toLowerCase());
+            return periodMatch && categoryMatch && queryMatch;
+          },
+          hasVisibleCards(sectionEl) {
+            return Array.from(sectionEl.querySelectorAll(".event-card")).some(card => this.match(card));
+          },
+          reset() {
+            this.query = "";
+            this.period = "all";
+            this.category = "all";
+          }
+        };
+      }
+    </script>
+  </head>
+  <body class="bg-background text-text-primary">
+    <div x-data="timelineFilters()" x-on:keydown.escape.window="drawerOpen = false">
+      <header class="border-b border-border bg-background">
+        <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          <a href="#inicio" class="font-mono text-sm font-medium uppercase tracking-wide text-text-primary" data-ga-event="nav_click" data-ga-label="Inicio" data-ga-location="header">Internet / WWW</a>
+          <nav class="hidden items-center gap-5 font-mono text-xs uppercase tracking-wide text-text-secondary lg:flex" aria-label="Navegacion principal">
+            <a class="transition-colors duration-100 hover:text-text-primary" href="#timeline" data-ga-event="nav_click" data-ga-label="Timeline" data-ga-location="header">Timeline</a>
+            <a class="transition-colors duration-100 hover:text-text-primary" href="#actores" data-ga-event="nav_click" data-ga-label="Actores" data-ga-location="header">Actores</a>
+            <a class="transition-colors duration-100 hover:text-text-primary" href="#fuentes" data-ga-event="nav_click" data-ga-label="Fuentes" data-ga-location="header">Fuentes</a>
+          </nav>
+          <button
+            class="border border-border p-2 text-text-primary transition-colors duration-100 hover:border-era-web hover:text-era-web lg:hidden"
+            type="button"
+            aria-controls="mobile-nav"
+            x-bind:aria-expanded="drawerOpen.toString()"
+            x-on:click="drawerOpen = !drawerOpen"
+            data-ga-event="button_click"
+            data-ga-label="Abrir navegacion"
+            data-ga-location="header"
+          >
+            <i class="ph ph-list size-5" aria-hidden="true"></i>
+            <span class="sr-only">Abrir navegacion</span>
+          </button>
+        </div>
+        <nav
+          id="mobile-nav"
+          class="border-t border-border bg-surface px-4 py-4 font-mono text-sm uppercase tracking-wide text-text-secondary lg:hidden"
+          x-show="drawerOpen"
+          x-cloak
+          x-transition.duration.150ms
+          aria-label="Navegacion movil"
+        >
+          <div class="mx-auto grid max-w-6xl gap-3">
+            <a class="border border-border p-3" href="#timeline" x-on:click="drawerOpen = false">Timeline</a>
+            <a class="border border-border p-3" href="#actores" x-on:click="drawerOpen = false">Actores</a>
+            <a class="border border-border p-3" href="#fuentes" x-on:click="drawerOpen = false">Fuentes</a>
+          </div>
+        </nav>
+      </header>
+
+      <main id="inicio" class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <section class="border-b border-border pb-10 sm:pb-12">
+          <p class="font-mono text-xs uppercase tracking-wide text-era-web">Cronologia tecnica navegable</p>
+          <h1 class="mt-4 max-w-4xl text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
+            Internet y la World Wide Web, de la IA contemporanea a la conmutacion de paquetes
+          </h1>
+          <p class="mt-5 max-w-3xl text-lg leading-8 text-text-secondary sm:text-xl">
+            Internet es la infraestructura global de redes interoperables. La Web es una aplicacion construida sobre ella con URL, HTTP y HTML. Esta cronologia separa infraestructura, Web, gobernanza, plataformas y regulacion para contar la historia desde el presente hacia sus fundamentos.
+          </p>
+          <div class="mt-8 grid gap-3 border-y border-border py-5 sm:grid-cols-3">
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Eventos</p>
+              <p class="mt-1 text-2xl font-bold">34</p>
+            </div>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Periodo</p>
+              <p class="mt-1 text-2xl font-bold">2026 a 1960</p>
+            </div>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Lectura</p>
+              <p class="mt-1 text-2xl font-bold">Actual a antiguo</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-8" aria-labelledby="resumen-title">
+          <h2 id="resumen-title" class="text-2xl font-bold sm:text-3xl">Resumen ejecutivo</h2>
+          <div class="mt-5 grid gap-4 lg:grid-cols-3">
+            <article class="border border-border bg-surface p-5">
+              <i class="ph ph-network size-7 text-era-foundation" aria-hidden="true"></i>
+              <h3 class="mt-4 text-xl font-bold">Infraestructura antes que mito</h3>
+              <p class="mt-3 leading-7 text-text-secondary">La red nace por capas compatibles: time-sharing, packet switching, internetworking, correo, DNS y protocolos abiertos.</p>
+            </article>
+            <article class="border border-border bg-surface p-5">
+              <i class="ph ph-browser size-7 text-era-web" aria-hidden="true"></i>
+              <h3 class="mt-4 text-xl font-bold">La Web abre la publicacion</h3>
+              <p class="mt-3 leading-7 text-text-secondary">CERN libera la Web, W3C estabiliza estandares y los navegadores convierten documentos enlazados en plataforma universal.</p>
+            </article>
+            <article class="border border-border bg-surface p-5">
+              <i class="ph ph-buildings size-7 text-era-conflict" aria-hidden="true"></i>
+              <h3 class="mt-4 text-xl font-bold">El poder se reubica</h3>
+              <p class="mt-3 leading-7 text-text-secondary">La tension actual no es si Internet existe, sino quien intermedia busqueda, navegador, nube, identidad, regulacion y ahora IA.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="border-y border-border py-6" aria-labelledby="filters-title">
+          <div class="flex items-center justify-between gap-4">
+            <h2 id="filters-title" class="font-mono text-xs uppercase tracking-wide text-text-secondary">Explorar eventos</h2>
+            <button
+              type="button"
+              class="border border-border px-3 py-2 font-mono text-xs uppercase tracking-wide text-text-secondary transition-colors duration-100 hover:border-era-web hover:text-era-web"
+              x-on:click="filtersOpen = !filtersOpen"
+              x-bind:aria-expanded="filtersOpen.toString()"
+              aria-controls="filters-panel"
+            >
+              <i class="ph ph-funnel mr-2 inline-block size-4 align-[-3px]" aria-hidden="true"></i>
+              Filtros
+            </button>
+          </div>
+          <div id="filters-panel" class="mt-5 grid gap-5" x-show="filtersOpen" x-transition.duration.150ms>
+            <label class="block">
+              <span class="font-mono text-xs uppercase tracking-wide text-text-secondary">Busqueda local</span>
+              <span class="mt-2 flex border border-border bg-surface">
+                <span class="grid place-items-center px-3 text-text-secondary"><i class="ph ph-magnifying-glass size-5" aria-hidden="true"></i></span>
+                <input
+                  class="w-full bg-transparent px-3 py-3 font-mono text-sm text-text-primary placeholder:text-text-secondary"
+                  type="search"
+                  x-model="query"
+                  placeholder="Buscar persona, empresa, protocolo o evento"
+                />
+              </span>
+            </label>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Periodo</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="period = 'all'">Todos</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'contemporanea' ? 'border-era-conflict bg-era-conflict text-background' : 'border-era-conflict text-era-conflict opacity-70'" x-on:click="period = 'contemporanea'">2026-2016</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'plataformas' ? 'border-era-platform bg-era-platform text-background' : 'border-era-platform text-era-platform opacity-70'" x-on:click="period = 'plataformas'">2015-2004</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'web' ? 'border-era-web bg-era-web text-background' : 'border-era-web text-era-web opacity-70'" x-on:click="period = 'web'">1999-1983</button>
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="period === 'fundacion' ? 'border-era-foundation bg-era-foundation text-background' : 'border-era-foundation text-era-foundation opacity-70'" x-on:click="period = 'fundacion'">1983-1960</button>
+              </div>
+            </div>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Categoria</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <button class="border px-3 py-2 font-mono text-xs uppercase tracking-wide transition-colors duration-100" type="button" x-bind:class="category === 'all' ? 'border-text-primary bg-text-primary text-background' : 'border-border text-text-secondary opacity-70'" x-on:click="category = 'all'">Todas</button>
+                <button class="border border-era-foundation px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-foundation opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'foundation' ? 'bg-era-foundation text-background opacity-100' : ''" x-on:click="category = 'foundation'">Infraestructura</button>
+                <button class="border border-era-web px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-web opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'web' ? 'bg-era-web text-background opacity-100' : ''" x-on:click="category = 'web'">Web</button>
+                <button class="border border-era-platform px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-platform opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'platform' ? 'bg-era-platform text-background opacity-100' : ''" x-on:click="category = 'platform'">Plataformas</button>
+                <button class="border border-era-conflict px-3 py-2 font-mono text-xs uppercase tracking-wide text-era-conflict opacity-70 transition-colors duration-100" type="button" x-bind:class="category === 'governance' ? 'bg-era-conflict text-background opacity-100' : ''" x-on:click="category = 'governance'">Gobernanza</button>
+              </div>
+            </div>
+            <button class="justify-self-start border border-border px-4 py-2 font-mono text-sm text-text-secondary transition-colors duration-100 hover:border-text-primary hover:text-text-primary" type="button" x-on:click="reset()">Limpiar filtros</button>
+          </div>
+        </section>
+
+        <div class="grid gap-8 py-8 lg:grid-cols-[240px_1fr] lg:items-start">
+          <aside class="hidden border border-border bg-surface p-4 lg:sticky lg:top-4 lg:block" aria-label="Indice de periodos">
+            <p class="font-mono text-xs uppercase tracking-wide text-text-secondary">Periodos</p>
+            <nav class="mt-4 grid gap-2 font-mono text-xs uppercase tracking-wide">
+              <a class="border-l-2 border-era-conflict px-3 py-2 text-text-secondary transition-colors duration-100 hover:text-text-primary" href="#periodo-contemporaneo">2026-2016</a>
+              <a class="border-l-2 border-era-platform px-3 py-2 text-text-secondary transition-colors duration-100 hover:text-text-primary" href="#periodo-plataformas">2015-2004</a>
+              <a class="border-l-2 border-era-web px-3 py-2 text-text-secondary transition-colors duration-100 hover:text-text-primary" href="#periodo-web">1999-1983</a>
+              <a class="border-l-2 border-era-foundation px-3 py-2 text-text-secondary transition-colors duration-100 hover:text-text-primary" href="#periodo-fundacional">1983-1960</a>
+            </nav>
+          </aside>
+
+          <section id="timeline" aria-labelledby="timeline-title">
+            <h2 id="timeline-title" class="text-2xl font-bold sm:text-3xl">Timeline descendente</h2>
+            <p class="mt-3 max-w-3xl leading-7 text-text-secondary">Los hitos estan ordenados de la fecha mas actual a la mas antigua. Cada tarjeta conserva fecha, actores, instituciones, impacto y fuente.</p>
+
+            <section id="periodo-contemporaneo" class="mt-8 border-l-2 border-era-conflict pl-4 sm:pl-6" aria-labelledby="periodo-contemporaneo-title" x-show="hasVisibleCards($el)">
+              <div class="border border-border bg-surface p-5">
+                <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">2026-2016</p>
+                <h3 id="periodo-contemporaneo-title" class="mt-2 text-2xl font-bold sm:text-3xl">Gobernanza, privacidad, IA y regulacion</h3>
+                <p class="mt-3 leading-7 text-text-secondary">La red abierta sigue viva, pero la disputa central se mueve a intermediacion algoritmica, navegadores, nubes, cifrado, plataformas y reguladores.</p>
+              </div>
+              <div class="mt-5 grid gap-5">
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="web governance platform" data-search="2025 2026 web navegadores ia privacidad google ietf rfc 9849 rfc 9953 encrypted client hello doc" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">2025-2026</p>
+                  <h4 class="mt-2 text-xl font-bold">Web y navegadores con IA y privacidad mas profunda</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Google integra IA en Search y Chrome; en 2026 RFC 9849 formaliza Encrypted Client Hello y RFC 9953 lleva DNS cifrado a dispositivos restringidos via DoC.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Equipos de Google; autores IETF; operadores y navegadores.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Google, IETF, navegadores, ecosistema IoT.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La interfaz se vuelve conversacional y el cifrado oculta mas metadatos.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Google blogs; RFC 9849; RFC 9953.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="governance" data-search="2024 fcc neutralidad red dma dsa union europea gatekeepers plataformas regulacion" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">2024</p>
+                  <h4 class="mt-2 text-xl font-bold">Nuevo ciclo regulatorio</h4>
+                  <p class="mt-3 leading-7 text-text-primary">FCC vota restaurar la neutralidad de red; en Europa, DMA y DSA consolidan una era de supervision a gatekeepers y plataformas.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>FCC; instituciones de la UE.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>FCC, Union Europea.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La capa juridica intenta recuperar poder frente a plataformas dominantes.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">FCC; EUR-Lex.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="web governance" data-search="2023 w3c nonprofit eff https everywhere navegadores https defecto" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">2023</p>
+                  <h4 class="mt-2 text-xl font-bold">W3C cambia de forma y HTTPS se vuelve normal</h4>
+                  <p class="mt-3 leading-7 text-text-primary">W3C se relanza como nonprofit de interes publico; EFF retira HTTPS Everywhere porque los navegadores ya incorporan HTTPS por defecto.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Equipo W3C; EFF; fabricantes de navegadores.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>W3C, EFF, navegadores.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El estandar web se institucionaliza y HTTPS pasa a expectativa basal.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">W3C; EFF.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="web foundation" data-search="2021 2022 quic http3 http/3 ietf rfc 9000 rfc 9114 latencia transporte cifrado" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">2021-2022</p>
+                  <h4 class="mt-2 text-xl font-bold">QUIC y HTTP/3</h4>
+                  <p class="mt-3 leading-7 text-text-primary">QUIC se estandariza en 2021 y HTTP/3 en 2022 como mapeo de HTTP sobre QUIC.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Comunidad IETF; Iyengar, Thomson y coautores.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>IETF, navegadores, CDNs, nubes.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Menor latencia, mejor multiplexacion y cifrado integrado cerca del transporte.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC 9000 y RFC 9114.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="web governance" data-search="julio 2022 w3c dids identidad descentralizada estandar web" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">Julio 2022</p>
+                  <h4 class="mt-2 text-xl font-bold">W3C estandariza DIDs</h4>
+                  <p class="mt-3 leading-7 text-text-primary">W3C publica Decentralized Identifiers como estandar web oficial.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Comunidad W3C del grupo DID.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>W3C.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Reconoce identidad descentralizada en el ecosistema web, con adopcion fragmentada.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">W3C press release y especificacion DID.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="governance foundation platform" data-search="2017 2018 neutralidad red tls 1.3 dns over https doh 1.1.1.1 cloudflare apnic fcc" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">2017-2018</p>
+                  <h4 class="mt-2 text-xl font-bold">Neutralidad de red y privacidad tecnica</h4>
+                  <p class="mt-3 leading-7 text-text-primary">FCC desmonta la politica de neutralidad en 2017; en 2018 llegan TLS 1.3, DNS over HTTPS y 1.1.1.1 de Cloudflare.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>FCC; Eric Rescorla; Hoffman y McManus; equipos Cloudflare/APNIC.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>FCC, IETF, Cloudflare, APNIC.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El debate regulatorio se cruza con proteccion criptografica y privacidad operacional.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">FCC; RFC 8446; RFC 8484; Cloudflare.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="governance" data-search="octubre 2016 iana stewardship icann identificadores gobernanza multiactor" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">Octubre 2016</p>
+                  <h4 class="mt-2 text-xl font-bold">Transicion de custodia de IANA</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Se completa la transicion de stewardship de IANA, alejando la supervision directa del gobierno de EE. UU. hacia el modelo multiactor.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Comunidad tecnica global; ICANN; operadores y cuerpos de coordinacion.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>ICANN, IANA, comunidad de Internet.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La gobernanza de identificadores gana legitimidad internacional.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">ICANN History Project.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="contemporanea" data-category="governance" data-search="abril mayo 2016 gdpr union europea privacidad reglamento 2016/679" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">Abril-mayo 2016</p>
+                  <h4 class="mt-2 text-xl font-bold">GDPR</h4>
+                  <p class="mt-3 leading-7 text-text-primary">La Union Europea adopta el Reglamento 2016/679.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Legisladores e instituciones de la UE; autoridades de proteccion de datos.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>UE, EUR-Lex.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La privacidad pasa de politica de sitio a obligacion regulatoria estructural.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">EUR-Lex en espanol.</p></details>
+                </article>
+              </div>
+            </section>
+
+            <section id="periodo-plataformas" class="mt-10 border-l-2 border-era-platform pl-4 sm:pl-6" aria-labelledby="periodo-plataformas-title" x-show="hasVisibleCards($el)">
+              <div class="border border-border bg-surface p-5">
+                <p class="font-mono text-xs uppercase tracking-wide text-era-platform">2015-2004</p>
+                <h3 id="periodo-plataformas-title" class="mt-2 text-2xl font-bold sm:text-3xl">Plataformas, movilidad y nube</h3>
+                <p class="mt-3 leading-7 text-text-secondary">La Web deja de ser paginas y se vuelve plataforma de identidad, video, APIs, nube, cifrado y experiencia movil.</p>
+              </div>
+              <div class="mt-5 grid gap-5">
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="web platform foundation" data-search="mayo diciembre 2015 http/2 lets encrypt isrg certificados tls cifrado gratis rfc 7540" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">Mayo-diciembre 2015</p>
+                  <h4 class="mt-2 text-xl font-bold">HTTP/2 y Let's Encrypt</h4>
+                  <p class="mt-3 leading-7 text-text-primary">HTTP/2 optimiza multiplexacion y latencia; Let's Encrypt entra en beta publica y automatiza certificados gratuitos.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Comunidad IETF; Josh Aas y equipo ISRG/Let's Encrypt.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>IETF, ISRG/Let's Encrypt, navegadores y hosts.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Rendimiento y cifrado pasan de extra a expectativa basica.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC 7540; Let's Encrypt blog.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="platform foundation" data-search="septiembre 2010 2015 cloudflare edge web cdn ddos dns tls matthew prince michelle zatlyn lee holloway" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">Septiembre 2010-2015</p>
+                  <h4 class="mt-2 text-xl font-bold">La edge web gana peso</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Cloudflare se lanza en 2010, posicionando seguridad, CDN y rendimiento como capa intermedia critica.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Matthew Prince, Michelle Zatlyn y Lee Holloway.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Cloudflare.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El borde gana poder operativo y politico: cache, DDoS, DNS y terminacion TLS.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Cloudflare Our Story y founders' letter.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="platform governance" data-search="2008 2015 bitcoin ethereum web3 satoshi nakamoto vitalik buterin blockchain confianza propiedad digital" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">2008-2015</p>
+                  <h4 class="mt-2 text-xl font-bold">Corrientes cripto y Web3</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Bitcoin presenta un modelo monetario y de consenso descentralizado; Ethereum se lanza en 2015 como plataforma programable.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Satoshi Nakamoto; Vitalik Buterin.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Bitcoin, Ethereum Foundation/comunidad.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Reabre la discusion sobre confianza, identidad, activos y propiedad digital.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Bitcoin.org; Ethereum whitepaper/portal.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="web platform" data-search="septiembre 2008 chrome chromium google sandboxing navegador larry page sergey brin parisa tabriz" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">Septiembre 2008</p>
+                  <h4 class="mt-2 text-xl font-bold">Chrome y Chromium</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Google lanza Chrome y abre Chromium como proyecto libre.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Larry Page, Sergey Brin y equipo Chromium; Parisa Tabriz y sucesores.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Google, Chromium.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Reinicia la competencia en navegadores con velocidad, sandboxing y actualizaciones rapidas.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Chromium blog y Google.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="platform web" data-search="junio 2007 julio 2008 iphone app store apple steve jobs att web apps nativas movil" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">Junio 2007-julio 2008</p>
+                  <h4 class="mt-2 text-xl font-bold">iPhone y App Store</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Apple presenta iPhone y al ano siguiente abre App Store con 500 apps en el lanzamiento.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Steve Jobs y equipos Apple/iOS.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Apple, AT&T.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Internet se vuelve movil, tactil y distribuida por tiendas de apps.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Apple Newsroom.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="platform foundation" data-search="marzo 2006 aws s3 ec2 nube publica amazon infraestructura servicio datacenter" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">Marzo 2006</p>
+                  <h4 class="mt-2 text-xl font-bold">La nube publica despega</h4>
+                  <p class="mt-3 leading-7 text-text-primary">AWS lanza S3 y luego EC2, convirtiendo infraestructura en servicio escalable sobre la red.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Equipos de Amazon/AWS.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>AWS.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Desplegar servicios ya no exige poseer un datacenter.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">AWS origins y whitepaper.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="foundation governance" data-search="2005 dnssec ietf arends dns autenticidad integridad origen rfc 4033 4034" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">2005</p>
+                  <h4 class="mt-2 text-xl font-bold">DNSSEC</h4>
+                  <p class="mt-3 leading-7 text-text-primary">La IETF publica el conjunto base de DNSSEC para autenticidad de origen e integridad de datos DNS.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Comunidad IETF; Arends y colegas.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>IETF, IANA, operadores DNS.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El sistema de nombres empieza a ser verificable, no solo resoluble.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC 4033/4034.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="plataformas" data-category="web platform" data-search="2004 2005 facebook youtube mark zuckerberg chad hurley contenido usuarios video social" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-platform">2004-2005</p>
+                  <h4 class="mt-2 text-xl font-bold">Web social y contenido generado por usuarios</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Facebook se lanza en 2004 y YouTube registra su dominio en 2005 con la ambicion de publicar video para cualquiera con camara e Internet.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Mark Zuckerberg y equipo fundador; Chad Hurley y equipo de YouTube.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Facebook/Meta, YouTube.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web se vuelve identidad, comunidad, video y publicacion masiva.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Meta About; YouTube official blog.</p></details>
+                </article>
+              </div>
+            </section>
+
+            <section id="periodo-web" class="mt-10 border-l-2 border-era-web pl-4 sm:pl-6" aria-labelledby="periodo-web-title" x-show="hasVisibleCards($el)">
+              <div class="border border-border bg-surface p-5">
+                <p class="font-mono text-xs uppercase tracking-wide text-era-web">1999-1983</p>
+                <h3 id="periodo-web-title" class="mt-2 text-2xl font-bold sm:text-3xl">Apertura, Web y comercializacion</h3>
+                <p class="mt-3 leading-7 text-text-secondary">Internet escala academicamente y luego comercialmente. La Web aparece encima y se vuelve el medio universal de publicacion y descubrimiento.</p>
+              </div>
+              <div class="mt-5 grid gap-5">
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web governance platform" data-search="1998 1999 antitrust microsoft internet explorer netscape doj navegador windows litigio" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-conflict">1998-1999</p>
+                  <h4 class="mt-2 text-xl font-bold">Antitrust y fin de la primera guerra de navegadores</h4>
+                  <p class="mt-3 leading-7 text-text-primary">La integracion agresiva de Internet Explorer en Windows escala a litigio antimonopolio.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Departamento de Justicia de EE. UU.; Microsoft; Netscape.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>DOJ, Microsoft.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El navegador queda reconocido como infraestructura estrategica.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">DOJ y Microsoft history.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web governance platform" data-search="1998 google pagerank mozilla icann dns nombres larry page sergey brin jon postel stanford iana" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">1998</p>
+                  <h4 class="mt-2 text-xl font-bold">Busqueda, navegador abierto y gobernanza de nombres</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Google incorpora PageRank; Netscape libera codigo y nace Mozilla; ICANN se crea para coordinar DNS e identificadores.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Larry Page y Sergey Brin; comunidad Mozilla; Jon Postel y comunidad tecnica.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>Google, Mozilla, ICANN, IANA, Stanford.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web se hace encontrable, el navegador vuelve a disputarse y DNS entra a regimen multiactor.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">Stanford PageRank; Mozilla history; ICANN history.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web platform" data-search="1995 comercializacion guerra navegadores nsf nsfnet netscape javascript microsoft internet explorer windows 95 brendan eich marc andreessen jim clark bill gates" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">1995</p>
+                  <h4 class="mt-2 text-xl font-bold">Comercializacion abierta y guerra de navegadores</h4>
+                  <p class="mt-3 leading-7 text-text-primary">NSF cierra NSFNET como backbone; Netscape expande el navegador comercial; JavaScript nace en Netscape; Microsoft lanza Internet Explorer con Windows 95.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Brendan Eich; Marc Andreessen y Jim Clark; Bill Gates y equipo IE.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>NSF, Netscape, Microsoft.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Internet entra al mercado masivo y empieza la lucha por controlar la puerta de entrada.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">NSF GPRA/Impacts; MDN; Microsoft.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web governance" data-search="octubre 1994 w3c tim berners-lee mit cern darpa comision europea estandares abiertos" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">Octubre 1994</p>
+                  <h4 class="mt-2 text-xl font-bold">Nace W3C</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Berners-Lee funda W3C en MIT en colaboracion con CERN y apoyo de DARPA y la Comision Europea.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Tim Berners-Lee.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>W3C, MIT, CERN, DARPA, Comision Europea.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web gana una casa institucional para estandares abiertos.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">W3C history/about.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web" data-search="1993 mosaic ncsa marc andreessen eric bina navegador unix mac pc university of illinois" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">1993</p>
+                  <h4 class="mt-2 text-xl font-bold">Mosaic populariza la Web</h4>
+                  <p class="mt-3 leading-7 text-text-primary">NCSA Mosaic ofrece navegador usable para Unix, Mac y PC, y vuelve la Web instalable por no expertos.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Marc Andreessen y Eric Bina.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>NCSA, University of Illinois.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web pasa de herramienta academica a fenomeno masivo.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">NCSA y CHM.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web governance" data-search="30 abril 1993 cern libera web dominio publico tim berners-lee software www" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">30 abril 1993</p>
+                  <h4 class="mt-2 text-xl font-bold">CERN libera la Web</h4>
+                  <p class="mt-3 leading-7 text-text-primary">CERN pone el software WWW en dominio publico.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Tim Berners-Lee; CERN como titular institucional.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>CERN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La apertura juridica acelera adopcion global y evita captura propietaria temprana.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">CERN Birth of the Web.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web" data-search="1991 primer sitio web info.cern.ch tim berners-lee cern world wide web publico" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">1991</p>
+                  <h4 class="mt-2 text-xl font-bold">Primer sitio web</h4>
+                  <p class="mt-3 leading-7 text-text-primary"><code class="font-mono text-era-web">info.cern.ch</code> entra en servicio como punto publico del proyecto World Wide Web.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Tim Berners-Lee; equipo de CERN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>CERN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web pasa de idea interna a servicio visible.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">CERN historia del Web.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="web foundation" data-search="1989 1990 propuesta www cern url http html tim berners-lee robert cailliau navegador servidor" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-web">1989-1990</p>
+                  <h4 class="mt-2 text-xl font-bold">Propuesta WWW en CERN</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Berners-Lee propone un sistema distribuido de informacion y en 1990 ya existen servidor, navegador/editor y los principios de URL, HTTP y HTML.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Tim Berners-Lee; Robert Cailliau.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>CERN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La Web nace como capa documental universal sobre Internet.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">CERN historia del Web; WorldWideWeb history.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="foundation governance" data-search="1983 1987 dns domain name system tlds .com .org .edu .gov .mil paul mockapetris jon postel craig partridge iana" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1983-1987</p>
+                  <h4 class="mt-2 text-xl font-bold">DNS hace escalable la red</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Se abandona la tabla plana de hosts y se consolida el Domain Name System; aparecen TLDs como <code class="font-mono text-era-foundation">.com</code>, <code class="font-mono text-era-foundation">.org</code>, <code class="font-mono text-era-foundation">.edu</code>, <code class="font-mono text-era-foundation">.gov</code> y <code class="font-mono text-era-foundation">.mil</code>.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Paul Mockapetris; Jon Postel; Craig Partridge.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>USC/ISI, BBN, IANA.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Nombrar deja de depender de administracion manual fragil.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC 1034/1035; CHM.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="web" data-category="foundation" data-search="1986 nsfnet nsf ibm universidades backbone academico supercomputo investigadores" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1986</p>
+                  <h4 class="mt-2 text-xl font-bold">Nace NSFNET</h4>
+                  <p class="mt-3 leading-7 text-text-primary">NSF lanza NSFNET para conectar investigadores y centros de supercomputo; se vuelve backbone academico de facto en EE. UU.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Equipos de NSF, universidades y socios industriales.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>NSF, universidades, IBM y socios del backbone.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Democratiza acceso academico y prepara privatizacion comercial.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">NSF Impacts; IBM NSFNET.</p></details>
+                </article>
+              </div>
+            </section>
+
+            <section id="periodo-fundacional" class="mt-10 border-l-2 border-era-foundation pl-4 sm:pl-6" aria-labelledby="periodo-fundacional-title" x-show="hasVisibleCards($el)">
+              <div class="border border-border bg-surface p-5">
+                <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1983-1960</p>
+                <h3 id="periodo-fundacional-title" class="mt-2 text-2xl font-bold sm:text-3xl">Fundacion tecnica de Internet</h3>
+                <p class="mt-3 leading-7 text-text-secondary">La fase fundacional desacopla computo, comunicacion, redes, nombres y correo hasta formar una Internet operable.</p>
+              </div>
+              <div class="mt-5 grid gap-5">
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation governance" data-search="1981 1983 rfc 791 ip rfc 793 tcp rfc 821 smtp arpanet tcp/ip jon postel cerf kahn darpa ietf" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1981-1983</p>
+                  <h4 class="mt-2 text-xl font-bold">Se formaliza la pila basica</h4>
+                  <p class="mt-3 leading-7 text-text-primary">RFC 791 define IP, RFC 793 define TCP y RFC 821 consolida SMTP; en 1983 ARPANET migra a TCP/IP.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Jon Postel; Vint Cerf y Bob Kahn; comunidad RFC.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>IETF/RFC Editor, DARPA, USC/ISI.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>La red opera sobre estandares replicables, no acuerdos ad hoc.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC 791, RFC 793, RFC 821, DARPA.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1973 1974 internetworking ethernet bob kahn vint cerf bob metcalfe david boggs darpa stanford xerox parc" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1973-1974</p>
+                  <h4 class="mt-2 text-xl font-bold">Internetworking y Ethernet</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Kahn y Cerf trabajan en protocolos para unir redes distintas; Metcalfe y Boggs crean Ethernet en Xerox PARC.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Bob Kahn, Vint Cerf, Bob Metcalfe y David Boggs.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>DARPA, Stanford, Xerox PARC.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Quedan resueltas dos capas: interred y red local.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">DARPA TCP/IP; IEEE/CHM sobre Ethernet.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation web" data-search="1971 1972 email red ray tomlinson usuario@host bbn arpanet killer app correo" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1971-1972</p>
+                  <h4 class="mt-2 text-xl font-bold">Email en red</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Ray Tomlinson adapta programas existentes para enviar correo entre hosts y adopta la convencion <code class="font-mono text-era-foundation">usuario@host</code>.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Ray Tomlinson.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>BBN, ARPANET.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El correo se vuelve la primera aplicacion masiva de Internet.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RFC Hobbes timeline; CHM.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1969 arpanet cuatro nodos ucla sri ucsb utah charley kline primer mensaje bbn arpa" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1969</p>
+                  <h4 class="mt-2 text-xl font-bold">Primeros cuatro nodos de ARPANET</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Quedan enlazados UCLA, SRI, UCSB y Utah; el 29 de octubre se registra el primer intento de mensaje entre UCLA y SRI.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Equipos de UCLA y SRI; Charley Kline; Roberts y Taylor.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>ARPA, UCLA, SRI, UCSB, Utah, BBN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>El proyecto pasa a red viva.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">DARPA; CHM.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1968 contrato imp arpanet bbn routers interface message processors larry roberts bob taylor arpa" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1968</p>
+                  <h4 class="mt-2 text-xl font-bold">Contrato IMP para ARPANET</h4>
+                  <p class="mt-3 leading-7 text-text-primary">ARPA contrata a BBN para construir los primeros routers, los Interface Message Processors.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Larry Roberts; Bob Taylor; equipo de BBN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>ARPA, BBN.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Hace posible una red operativa de paquetes entre hosts heterogeneos.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">DARPA ARPANET; registro visual historico.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1965 1970 packet switching npl donald davies laboratorio national physical laboratory paquetes" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1965-1970</p>
+                  <h4 class="mt-2 text-xl font-bold">Packet switching en NPL</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Donald Davies y su equipo desarrollan packet switching y redes practicas en NPL.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Donald Davies; equipo de NPL.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>National Physical Laboratory.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Convierte una intuicion teorica en metodo de transmision reusable.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">NPL biografia e historial.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1962 1964 redes distribuidas paul baran rand project usaf on distributed communications resiliencia" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1962-1964</p>
+                  <h4 class="mt-2 text-xl font-bold">Redes distribuidas de Baran</h4>
+                  <p class="mt-3 leading-7 text-text-primary">RAND publica la serie <em>On Distributed Communications</em>, que formaliza redes distribuidas y tolerantes a fallas.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>Paul Baran.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>RAND, USAF Project RAND.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Base conceptual de resiliencia y enrutamiento distribuido.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">RAND RM-3420 y archivo RAND.</p></details>
+                </article>
+
+                <article class="event-card border border-border bg-surface p-5" data-period="fundacion" data-category="foundation" data-search="1960 1962 vision red interactiva ipto licklider bob taylor arpa darpa mit time sharing recursos compartidos" x-show="match($el)" x-transition.duration.150ms>
+                  <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">1960-1962</p>
+                  <h4 class="mt-2 text-xl font-bold">Vision de red interactiva e IPTO</h4>
+                  <p class="mt-3 leading-7 text-text-primary">Licklider empuja en ARPA la idea de computo interactivo y recursos compartidos en red; IPTO nace como brazo institucional para financiarlo.</p>
+                  <dl class="mt-4 grid gap-3 text-sm text-text-secondary sm:grid-cols-3">
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Personas</dt><dd>J.C.R. Licklider; Bob Taylor.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Organizaciones</dt><dd>ARPA/DARPA, MIT, universidades financiadas.</dd></div>
+                    <div><dt class="font-mono text-xs uppercase tracking-wide text-text-primary">Impacto</dt><dd>Cambia la meta: una red de maquinas cooperando.</dd></div>
+                  </dl>
+                  <details class="mt-4 border-t border-border pt-4"><summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-text-secondary">Fuentes</summary><p class="mt-3 text-sm text-text-secondary">DARPA IPTO; CHM historia de los sesenta.</p></details>
+                </article>
+              </div>
+            </section>
+          </section>
+        </div>
+
+        <section id="actores" class="border-t border-border py-10" aria-labelledby="actores-title">
+          <p class="font-mono text-xs uppercase tracking-wide text-era-web">Actores estructurales</p>
+          <h2 id="actores-title" class="mt-2 text-2xl font-bold sm:text-3xl">Instituciones y empresas que moldearon la red</h2>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">DARPA</h3><p class="mt-2 text-sm leading-6 text-text-secondary">IPTO, ARPANET e impulso decisivo a TCP/IP.</p></article>
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">NSF</h3><p class="mt-2 text-sm leading-6 text-text-secondary">NSFNET llevo Internet al backbone academico y a la privatizacion competitiva.</p></article>
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">CERN</h3><p class="mt-2 text-sm leading-6 text-text-secondary">Cuna de la Web y punto de apertura juridica decisivo.</p></article>
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">IETF / IANA / ICANN</h3><p class="mt-2 text-sm leading-6 text-text-secondary">RFCs, parametros, nombres, numeros y modelo multiactor.</p></article>
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">W3C</h3><p class="mt-2 text-sm leading-6 text-text-secondary">Casa de estandares abiertos de la Web: HTML, CSS, accesibilidad y APIs.</p></article>
+            <article class="border border-border bg-surface p-4"><h3 class="font-bold">Google, Microsoft, AWS y Cloudflare</h3><p class="mt-2 text-sm leading-6 text-text-secondary">Busqueda, navegador, nube, borde, seguridad y ahora interfaces con IA.</p></article>
+          </div>
+
+          <div class="mt-10">
+            <p class="font-mono text-xs uppercase tracking-wide text-era-foundation">Fundadores e inventores</p>
+            <h3 class="mt-2 text-xl font-bold sm:text-2xl">Personas que disenaron la red</h3>
+            <p class="mt-3 leading-7 text-text-secondary">Doce figuras que, en distintas epocas, convirtieron ideas en protocolos, infraestructura y plataformas operativas.</p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">J.C.R. Licklider</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Visionario y patrocinador</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Impulso desde ARPA/IPTO la idea de computo interactivo y red de recursos compartidos, la intuicion mas cercana al Internet antes de Internet.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Paul Baran</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Arquitecto de resiliencia</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Formalizo en RAND la logica de redes distribuidas y tolerantes a fallas, pieza seminal para pensar comunicaciones robustas.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Donald Davies</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Coinventor de packet switching</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Desarrollo en NPL el concepto y la implementacion temprana de conmutacion de paquetes, base operativa de la red moderna.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Bob Taylor y Larry Roberts</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Constructores de ARPANET</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Tradujeron la vision de Licklider en arquitectura de red operativa dentro de ARPA.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Vint Cerf y Bob Kahn</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Padres de Internet</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Disenaron TCP/IP e internetworking, permitiendo unir redes distintas bajo una arquitectura abierta y replicable.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Jon Postel</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Editor y guardian tecnico</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Central en RFCs, asignacion de numeros y operacion temprana; bisagra entre diseno tecnico y gobernanza de Internet.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Paul Mockapetris</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Padre del DNS</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Diseno el Domain Name System, que hizo escalable la red mas alla de tablas manuales de hosts.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Tim Berners-Lee</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-web">Padre de la Web</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Integro URL, HTTP, HTML, navegador y servidor en una plataforma documental universal construida sobre Internet.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Robert Cailliau</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-web">Cofundador de la Web en CERN</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Ayudo a impulsar, explicar y organizar el proyecto WWW dentro de CERN y su expansion temprana.</p>
+              </article>
+              <article class="border border-border bg-surface p-4">
+                <h4 class="font-bold">Bob Metcalfe y David Boggs</h4>
+                <p class="mt-1 font-mono text-xs uppercase tracking-wide text-era-foundation">Padres de Ethernet</p>
+                <p class="mt-2 text-sm leading-6 text-text-secondary">Hicieron de la LAN una realidad industrial en Xerox PARC; su trabajo se convirtio en el cableado logico de las redes locales modernas.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-border px-4 py-6 sm:px-6 lg:px-8">
+        <div class="mx-auto flex max-w-6xl flex-col gap-2 font-mono text-xs uppercase tracking-wide text-text-secondary sm:flex-row sm:items-center sm:justify-between">
+          <p>Cronologia de Internet y la World Wide Web</p>
+          <p>HTML + TailwindCSS + Alpine.js + Phosphor Icons</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
