@@ -1,6 +1,6 @@
 # Cronología de Internet y la World Wide Web
 
-Proyecto web estático que recopila, organiza y presenta una cronología sobre la historia de Internet y la World Wide Web. La pagina cuenta la historia de la fecha mas actual a la mas antigua para mostrar como los debates actuales sobre IA, privacidad, plataformas y regulación vienen de decisiones técnicas e institucionales tomadas desde los anos sesenta.
+Proyecto web estático que recopila, organiza y presenta una cronología sobre la historia de Internet y la World Wide Web. La página cuenta la historia de la fecha más actual a la más antigua para mostrar cómo los debates actuales sobre IA, privacidad, plataformas y regulación vienen de decisiones técnicas e institucionales tomadas desde los años sesenta.
 
 ## Finalidad
 
@@ -14,7 +14,7 @@ El objetivo es ofrecer una referencia navegable para entender:
 
 ## Contenido
 
-La experiencia principal esta en `index.html` y contiene:
+La experiencia principal está en `index.html` y contiene:
 
 - Un resumen ejecutivo sobre Internet, la Web y sus capas de gobernanza.
 - Una timeline descendente con 34 hitos, desde 2025-2026 hasta 1960-1962.
@@ -67,11 +67,16 @@ La búsqueda local no envía el texto escrito por el usuario. Solo se mide la lo
 ```text
 .
 ├── index.html
+├── favicon.svg
+├── og-image.svg
+├── og-image.png
 ├── cronologia-deep-research-internet-report.md
 ├── DESIGN.md
 ├── theme.md
 ├── package.json
 ├── bun.lock
+├── scripts/
+│   └── generate-og.mjs
 ├── src/
 │   └── input.css
 └── dist/
@@ -102,6 +107,12 @@ Para iterar estilos durante desarrollo:
 
 ```bash
 bun run watch
+```
+
+Regenerar la imagen Open Graph (`og-image.png`) después de editar `og-image.svg`:
+
+```bash
+bun run generate-og
 ```
 
 El sitio puede abrirse directamente desde `index.html` en el navegador porque el CSS compilado se conserva en `dist/output.css`.

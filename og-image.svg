@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0f172a"/>
+
+  <!-- Top amber accent -->
+  <rect x="0" y="0" width="1200" height="4" fill="#f59e0b"/>
+
+  <!-- ── Right-side network decoration ── -->
+  <!-- Connection lines -->
+  <line x1="950" y1="190" x2="1090" y2="310" stroke="#1e293b" stroke-width="2.5"/>
+  <line x1="950" y1="190" x2="850"  y2="370" stroke="#1e293b" stroke-width="2.5"/>
+  <line x1="950" y1="190" x2="790"  y2="200" stroke="#1e293b" stroke-width="2.5"/>
+  <line x1="1090" y1="310" x2="850" y2="370" stroke="#1e293b" stroke-width="2.5"/>
+  <line x1="1090" y1="310" x2="1030" y2="470" stroke="#1e293b" stroke-width="2.5"/>
+  <line x1="850"  y1="370" x2="1030" y2="470" stroke="#1e293b" stroke-width="2.5"/>
+  <!-- Nodes (back to front) -->
+  <circle cx="790"  cy="200" r="9"  fill="#334155"/>
+  <circle cx="1030" cy="470" r="11" fill="#334155"/>
+  <circle cx="850"  cy="370" r="15" fill="#3b82f6" opacity="0.75"/>
+  <circle cx="1090" cy="310" r="20" fill="#3b82f6"/>
+  <circle cx="950"  cy="190" r="26" fill="#f59e0b"/>
+
+  <!-- ── Left-side text content ── -->
+  <!-- Tag line -->
+  <text
+    x="80" y="150"
+    font-family="'JetBrains Mono', 'Courier New', monospace"
+    font-size="14" font-weight="500"
+    fill="#f59e0b" letter-spacing="3">CRONOLOGÍA TÉCNICA NAVEGABLE</text>
+
+  <!-- Title line 1 -->
+  <text
+    x="80" y="255"
+    font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="62" font-weight="700"
+    fill="#e2e8f0">Internet y la</text>
+
+  <!-- Title line 2 -->
+  <text
+    x="80" y="328"
+    font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="62" font-weight="700"
+    fill="#e2e8f0">World Wide Web</text>
+
+  <!-- Amber divider -->
+  <rect x="80" y="352" width="64" height="3" rx="1" fill="#f59e0b"/>
+
+  <!-- Subtitle -->
+  <text
+    x="80" y="403"
+    font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-size="21"
+    fill="#94a3b8">De la IA contemporánea a la conmutación de paquetes</text>
+
+  <!-- Separator line -->
+  <rect x="80" y="495" width="640" height="1" fill="#1e293b"/>
+
+  <!-- Stats / metadata -->
+  <text
+    x="80" y="525"
+    font-family="'JetBrains Mono', 'Courier New', monospace"
+    font-size="14" letter-spacing="1"
+    fill="#475569">34 EVENTOS  ·  2026 – 1960  ·  INFRAESTRUCTURA, WEB, PLATAFORMAS, GOBERNANZA</text>
+
+  <!-- Attribution -->
+  <text
+    x="80" y="588"
+    font-family="'JetBrains Mono', 'Courier New', monospace"
+    font-size="13"
+    fill="#334155">HTML · TailwindCSS · Alpine.js · Phosphor Icons</text>
+</svg>

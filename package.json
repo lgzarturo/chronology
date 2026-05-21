@@ -6,13 +6,15 @@
   "scripts": {
     "build": "bunx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --minify",
     "watch": "bunx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --watch",
-    "verify": "bun run build"
+    "verify": "bun run build",
+    "generate-og": "bun scripts/generate-og.mjs"
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.2",
     "alpinejs": "^3.14.9"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/cli": "^4.1.7",
     "tailwindcss": "^4.1.7"
   }
